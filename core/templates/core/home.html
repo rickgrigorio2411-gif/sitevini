@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Truck Store — Máquinas e Equipamentos{% endblock %}
+{% block content %}
+
+<!-- HERO -->
+<div style="background: linear-gradient(135deg, var(--dark-2) 0%, var(--dark-3) 50%, #0f3460 100%); padding: 5rem 2rem; text-align: center; position: relative; overflow: hidden;">
+    <div style="position:absolute; inset:0; background: radial-gradient(ellipse at center top, rgba(233,69,96,0.15) 0%, transparent 70%);"></div>
+    <div style="position: relative; max-width: 700px; margin: 0 auto;">
+        <div style="display:inline-block; background:rgba(233,69,96,0.15); border:1px solid rgba(233,69,96,0.3); color:var(--primary); padding:0.3rem 1rem; border-radius:20px; font-size:0.82rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:1.2rem;">
+            Especialistas em equipamentos pesados
+        </div>
+        <h1 style="font-size: 3rem; font-weight: 800; color: #fff; line-height: 1.15; margin-bottom: 1rem; letter-spacing: -1px;">
+            Máquinas de qualidade<br><span style="color: var(--primary);">para o seu negócio</span>
+        </h1>
+        <p style="font-size: 1.15rem; color: #9ca3af; margin-bottom: 2.2rem; max-width: 520px; margin-left:auto; margin-right:auto;">
+            Encontre equipamentos novos, seminovos e usados com garantia, suporte técnico e as melhores condições do mercado.
+        </p>
+        <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+            <a href="{% url 'catalogo:lista' %}" class="btn btn-primary btn-lg">Ver Catálogo</a>
+            <a href="{% url 'core:contato' %}" class="btn btn-lg" style="background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2);">Fale Conosco</a>
+        </div>
+    </div>
+</div>
+
+<!-- STATS BAR -->
+<div style="background: var(--white); border-bottom: 1px solid var(--border); padding: 1.2rem 2rem;">
+    <div style="max-width:1240px; margin:0 auto; display:flex; justify-content:center; gap:3rem; flex-wrap:wrap;">
+        <div style="text-align:center;">
+            <div style="font-size:1.5rem; font-weight:800; color:var(--primary);">500+</div>
+            <div style="font-size:0.8rem; color:var(--text-muted); font-weight:500;">Equipamentos</div>
+        </div>
+        <div style="width:1px; background:var(--border);"></div>
+        <div style="text-align:center;">
+            <div style="font-size:1.5rem; font-weight:800; color:var(--primary);">10+</div>
+            <div style="font-size:0.8rem; color:var(--text-muted); font-weight:500;">Anos de mercado</div>
+        </div>
+        <div style="width:1px; background:var(--border);"></div>
+        <div style="text-align:center;">
+            <div style="font-size:1.5rem; font-weight:800; color:var(--primary);">Todo o Brasil</div>
+            <div style="font-size:0.8rem; color:var(--text-muted); font-weight:500;">Cobertura de entrega</div>
+        </div>
+        <div style="width:1px; background:var(--border);"></div>
+        <div style="text-align:center;">
+            <div style="font-size:1.5rem; font-weight:800; color:var(--primary);">Garantia</div>
+            <div style="font-size:0.8rem; color:var(--text-muted); font-weight:500;">Em todos os itens</div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    {% if categorias %}
+    <section style="margin-bottom: 3rem;">
+        <h2 class="section-title">Categorias</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.9rem;">
+            {% for cat in categorias %}
+            <a href="{% url 'catalogo:lista' %}?categoria={{ cat.slug }}"
+               style="background: var(--white); border: 1.5px solid var(--border); border-radius: 12px; padding: 0.9rem 1.4rem; text-decoration: none; color: var(--text); display: flex; align-items: center; gap: 0.6rem; font-weight: 600; font-size: 0.95rem; transition: var(--transition); box-shadow: var(--shadow);"
+               onmouseover="this.style.borderColor='var(--primary)'; this.style.color='var(--primary)'; this.style.transform='translateY(-2px)'"
+               onmouseout="this.style.borderColor='var(--border)'; this.style.color='var(--text)'; this.style.transform='translateY(0)'">
+                <span style="font-size: 1.4rem;">{{ cat.icone }}</span>
+                {{ cat.nome }}
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if destaques %}
+    <section style="margin-bottom: 3rem;">
+        <h2 class="section-title">⭐ Destaques</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.5rem;">
+            {% for m in destaques %}
+            <div class="card">
+                <div style="position:relative;">
+                    {% if m.imagem %}
+                    <img src="{{ m.imagem.url }}" alt="{{ m.nome }}" style="width:100%; height:210px; object-fit:cover;">
+                    {% else %}
+                    <div style="width:100%; height:210px; background:linear-gradient(135deg,#f1f2f4,#e5e7eb); display:flex; align-items:center; justify-content:center; font-size:3.5rem;">🏗️</div>
+                    {% endif %}
+                    {% if m.em_promocao %}
+                    <span class="badge badge-promo" style="position:absolute; top:10px; left:10px;">-{{ m.desconto_percentual }}%</span>
+                    {% endif %}
+                </div>
+                <div style="padding: 1.1rem 1.2rem 1.3rem;">
+                    <span class="badge {% if m.condicao == 'nova' %}badge-nova{% elif m.condicao == 'seminova' %}badge-seminova{% else %}badge-usada{% endif %}">{{ m.get_condicao_display }}</span>
+                    <h3 style="font-size: 1rem; font-weight: 700; margin: 0.55rem 0 0.2rem; color: var(--dark-2);">{{ m.nome }}</h3>
+                    <p style="color: var(--text-muted); font-size: 0.83rem; margin-bottom: 0.7rem;">{{ m.marca }} {{ m.modelo }} &mdash; {{ m.ano }}</p>
+                    {% if m.em_promocao %}<p class="price-old">R$ {{ m.preco }}</p>{% endif %}
+                    <p class="price">R$ {{ m.preco_atual }}</p>
+                    <a href="{{ m.get_absolute_url }}" class="btn btn-primary btn-sm" style="margin-top: 0.8rem; width:100%;">Ver Detalhes</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if recentes %}
+    <section>
+        <h2 class="section-title">🆕 Adicionados Recentemente</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.4rem;">
+            {% for m in recentes %}
+            <div class="card">
+                {% if m.imagem %}
+                <img src="{{ m.imagem.url }}" alt="{{ m.nome }}" style="width:100%; height:185px; object-fit:cover;">
+                {% else %}
+                <div style="width:100%; height:185px; background:linear-gradient(135deg,#f1f2f4,#e5e7eb); display:flex; align-items:center; justify-content:center; font-size:3rem;">🏗️</div>
+                {% endif %}
+                <div style="padding: 1rem 1.2rem 1.2rem;">
+                    <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.2rem; color: var(--dark-2);">{{ m.nome }}</h3>
+                    <p style="color: var(--text-muted); font-size: 0.82rem; margin-bottom: 0.6rem;">{{ m.marca }} {{ m.modelo }}</p>
+                    <p class="price" style="font-size:1.1rem;">R$ {{ m.preco_atual }}</p>
+                    <a href="{{ m.get_absolute_url }}" class="btn btn-secondary btn-sm" style="margin-top:0.7rem; width:100%;">Ver Detalhes</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+</div>
+{% endblock %}

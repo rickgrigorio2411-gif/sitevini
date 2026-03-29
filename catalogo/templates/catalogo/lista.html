@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}{% if categoria_atual %}{{ categoria_atual.nome }}{% else %}Catálogo{% endif %} — Truck Store{% endblock %}
+{% block content %}
+<div class="container">
+
+    <!-- PAGE HEADER -->
+    <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 1.9rem; font-weight: 800; color: var(--dark-2);">
+            {% if categoria_atual %}{{ categoria_atual.icone }} {{ categoria_atual.nome }}{% else %}Catálogo de Máquinas{% endif %}
+        </h1>
+        <p style="color: var(--text-muted); margin-top: 0.3rem;">Encontre o equipamento ideal para seu negócio</p>
+    </div>
+
+    <!-- FILTER BAR -->
+    <form method="get" style="background: var(--white); padding: 1.2rem 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 1.8rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end;">
+        <div style="flex: 1; min-width: 200px;" class="form-group" style="margin-bottom:0;">
+            <label>Buscar</label>
+            <input type="text" name="busca" value="{{ busca }}" placeholder="Nome, marca, modelo..." class="form-control">
+        </div>
+        <div class="form-group" style="margin-bottom:0; min-width:140px;">
+            <label>Condição</label>
+            <select name="condicao" class="form-control">
+                <option value="">Todas</option>
+                <option value="nova"     {% if condicao == 'nova' %}selected{% endif %}>Nova</option>
+                <option value="seminova" {% if condicao == 'seminova' %}selected{% endif %}>Seminova</option>
+                <option value="usada"    {% if condicao == 'usada' %}selected{% endif %}>Usada</option>
+            </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0; min-width:155px;">
+            <label>Ordenar</label>
+            <select name="ordenar" class="form-control">
+                <option value="">Padrão</option>
+                <option value="menor_preco" {% if ordenar == 'menor_preco' %}selected{% endif %}>Menor Preço</option>
+                <option value="maior_preco" {% if ordenar == 'maior_preco' %}selected{% endif %}>Maior Preço</option>
+                <option value="mais_novo"   {% if ordenar == 'mais_novo' %}selected{% endif %}>Mais Novo</option>
+            </select>
+        </div>
+        <div style="display:flex; gap:0.5rem; align-items:flex-end;">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+            {% if busca or condicao or ordenar or categoria_atual %}
+            <a href="{% url 'catalogo:lista' %}" class="btn btn-secondary">Limpar</a>
+            {% endif %}
+        </div>
+    </form>
+
+    <!-- CATEGORY PILLS -->
+    {% if categorias %}
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;">
+        <a href="{% url 'catalogo:lista' %}"
+           style="background: {% if not categoria_atual %}var(--primary){% else %}var(--white){% endif %}; color: {% if not categoria_atual %}#fff{% else %}var(--text){% endif %}; padding: 0.4rem 1rem; border-radius: 20px; text-decoration: none; font-size: 0.85rem; font-weight: 600; border: 1.5px solid {% if not categoria_atual %}var(--primary){% else %}var(--border){% endif %}; transition: var(--transition);">
+            Todas
+        </a>
+        {% for cat in categorias %}
+        <a href="{% url 'catalogo:lista' %}?categoria={{ cat.slug }}"
+           style="background: {% if categoria_atual.slug == cat.slug %}var(--primary){% else %}var(--white){% endif %}; color: {% if categoria_atual.slug == cat.slug %}#fff{% else %}var(--text){% endif %}; padding: 0.4rem 1rem; border-radius: 20px; text-decoration: none; font-size: 0.85rem; font-weight: 600; border: 1.5px solid {% if categoria_atual.slug == cat.slug %}var(--primary){% else %}var(--border){% endif %}; transition: var(--transition);">
+            {{ cat.icone }} {{ cat.nome }}
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- PRODUCT GRID -->
+    {% if maquinas %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+        {% for m in maquinas %}
+        <div class="card">
+            <div style="position: relative;">
+                {% if m.imagem %}
+                <img src="{{ m.imagem.url }}" alt="{{ m.nome }}" style="width:100%; height:205px; object-fit:cover;">
+                {% else %}
+                <div style="width:100%; height:205px; background:linear-gradient(135deg,#f1f2f4,#e5e7eb); display:flex; align-items:center; justify-content:center; font-size:3.5rem;">🏗️</div>
+                {% endif %}
+                {% if m.em_promocao %}
+                <span class="badge badge-promo" style="position:absolute; top:10px; left:10px;">-{{ m.desconto_percentual }}%</span>
+                {% endif %}
+            </div>
+            <div style="padding: 1rem 1.2rem 1.3rem;">
+                <div style="display:flex; gap:0.4rem; margin-bottom:0.5rem;">
+                    <span class="badge {% if m.condicao == 'nova' %}badge-nova{% elif m.condicao == 'seminova' %}badge-seminova{% else %}badge-usada{% endif %}">{{ m.get_condicao_display }}</span>
+                </div>
+                <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; color: var(--dark-2);">{{ m.nome }}</h3>
+                <p style="color: var(--text-muted); font-size: 0.83rem; margin-bottom: 0.7rem;">{{ m.marca }} {{ m.modelo }} &mdash; {{ m.ano }}</p>
+                {% if m.em_promocao %}<p class="price-old">R$ {{ m.preco }}</p>{% endif %}
+                <p class="price">R$ {{ m.preco_atual }}</p>
+                <div style="display: flex; gap: 0.6rem; margin-top: 0.9rem;">
+                    <a href="{{ m.get_absolute_url }}" class="btn btn-secondary btn-sm" style="flex:1;">Detalhes</a>
+                    <a href="{% url 'carrinho:adicionar' m.pk %}" class="btn btn-primary btn-sm" style="flex:1;">+ Carrinho</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 4rem 2rem; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow);">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+        <p style="font-size: 1.2rem; font-weight: 600; color: var(--dark-2); margin-bottom: 0.5rem;">Nenhuma máquina encontrada</p>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Tente ajustar os filtros ou buscar por outro termo.</p>
+        <a href="{% url 'catalogo:lista' %}" class="btn btn-primary">Ver Todas as Máquinas</a>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

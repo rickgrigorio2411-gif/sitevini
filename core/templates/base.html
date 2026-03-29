@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Truck Store{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e94560;
+            --primary-dark: #c73652;
+            --dark: #0f0f1a;
+            --dark-2: #1a1a2e;
+            --dark-3: #16213e;
+            --text: #2d2d2d;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --bg: #f8f9fb;
+            --white: #ffffff;
+            --success: #10b981;
+            --danger: #ef4444;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-md: 0 8px 32px rgba(0,0,0,0.12);
+            --transition: all 0.25s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* ── NAVBAR ── */
+        nav {
+            background: var(--dark-2);
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 68px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+        }
+
+        .nav-brand {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--primary) !important;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .nav-links a {
+            color: #c8cdd8;
+            text-decoration: none;
+            padding: 0.45rem 0.85rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--white);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .nav-cart {
+            background: var(--primary);
+            color: var(--white) !important;
+            padding: 0.45rem 1rem !important;
+            border-radius: 20px !important;
+            font-weight: 600 !important;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .nav-cart:hover {
+            background: var(--primary-dark) !important;
+            color: var(--white) !important;
+        }
+
+        .cart-badge {
+            background: var(--white);
+            color: var(--primary);
+            border-radius: 50%;
+            padding: 1px 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-left: 2px;
+        }
+
+        .nav-admin {
+            color: #6b7280 !important;
+            font-size: 0.8rem !important;
+        }
+
+        /* ── CONTAINER ── */
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+
+        /* ── ALERTS ── */
+        .messages { padding: 0 2rem; }
+        .alert {
+            padding: 0.85rem 1.2rem;
+            margin: 0.5rem 0;
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            font-weight: 500;
+            border-left: 4px solid;
+        }
+        .alert-success { background: #ecfdf5; color: #065f46; border-color: var(--success); }
+        .alert-warning { background: #fffbeb; color: #92400e; border-color: #f59e0b; }
+        .alert-info    { background: #eff6ff; color: #1e40af; border-color: #3b82f6; }
+        .alert-error   { background: #fef2f2; color: #991b1b; border-color: var(--danger); }
+
+        /* ── BUTTONS ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1.3rem;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+            letter-spacing: 0.01em;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 2px 8px rgba(233,69,96,0.35);
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 4px 16px rgba(233,69,96,0.45);
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background: #f1f2f4;
+            color: var(--text);
+        }
+        .btn-secondary:hover {
+            background: #e5e7eb;
+            transform: translateY(-1px);
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+        }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+        .btn-sm { padding: 0.35rem 0.8rem; font-size: 0.82rem; }
+        .btn-lg { padding: 0.85rem 2rem; font-size: 1.05rem; }
+
+        /* ── CARDS ── */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--dark-2);
+            color: #6b7280;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+        }
+        footer span { color: var(--primary); }
+
+        /* ── SECTION HEADERS ── */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-2);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, var(--border), transparent);
+            margin-left: 0.8rem;
+        }
+
+        /* ── BADGE ── */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .badge-promo { background: var(--primary); color: var(--white); }
+        .badge-cond  { background: #f1f2f4; color: var(--text-muted); }
+        .badge-nova  { background: #d1fae5; color: #065f46; }
+        .badge-seminova { background: #dbeafe; color: #1e40af; }
+        .badge-usada { background: #fef3c7; color: #92400e; }
+
+        /* ── PRICE ── */
+        .price {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .price-old {
+            text-decoration: line-through;
+            color: #9ca3af;
+            font-size: 0.88rem;
+        }
+
+        /* ── FORM FIELDS ── */
+        .form-group { margin-bottom: 1rem; }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+            color: var(--text);
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.6rem 0.85rem;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background: var(--white);
+            transition: border-color 0.2s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(233,69,96,0.12);
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 1rem; }
+            .nav-links a { padding: 0.4rem 0.5rem; font-size: 0.82rem; }
+            .container { padding: 1.5rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="{% url 'core:home' %}" class="nav-brand">🚛 Truck Store</a>
+    <div class="nav-links">
+        <a href="{% url 'core:home' %}">Início</a>
+        <a href="{% url 'catalogo:lista' %}">Catálogo</a>
+        <a href="{% url 'core:sobre' %}">Sobre</a>
+        <a href="{% url 'core:contato' %}">Contato</a>
+        <a href="{% url 'carrinho:ver' %}" class="nav-cart">
+            🛒 Carrinho
+            {% if carrinho_quantidade > 0 %}<span class="cart-badge">{{ carrinho_quantidade }}</span>{% endif %}
+        </a>
+        <a href="/admin/" class="nav-admin">Admin</a>
+    </div>
+</nav>
+
+{% if messages %}
+<div class="messages" style="max-width:1240px; margin:0.8rem auto; padding:0 1.5rem;">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% block content %}{% endblock %}
+
+<footer>
+    <p>&copy; 2024 <span>Truck Store</span> — Máquinas e Equipamentos de Qualidade</p>
+</footer>
+</body>
+</html>

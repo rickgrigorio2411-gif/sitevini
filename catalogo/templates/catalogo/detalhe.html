@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}{{ maquina.nome }} — Truck Store{% endblock %}
+{% block content %}
+<div class="container">
+
+    <!-- BREADCRUMB -->
+    <nav style="margin-bottom: 1.5rem; font-size: 0.88rem; color: var(--text-muted);">
+        <a href="{% url 'catalogo:lista' %}" style="color: var(--primary); text-decoration: none; font-weight: 600;">← Voltar ao Catálogo</a>
+        <span style="margin: 0 0.5rem;">›</span>
+        <span>{{ maquina.nome }}</span>
+    </nav>
+
+    <!-- PRODUCT DETAIL -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; background: var(--white); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 2.5rem;">
+
+        <!-- IMAGE -->
+        <div>
+            {% if maquina.imagem %}
+            <img src="{{ maquina.imagem.url }}" alt="{{ maquina.nome }}" style="width:100%; border-radius: var(--radius); object-fit:cover; max-height: 420px;">
+            {% else %}
+            <div style="width:100%; height:380px; background:linear-gradient(135deg,#f1f2f4,#e5e7eb); display:flex; align-items:center; justify-content:center; border-radius: var(--radius); font-size:5rem;">🏗️</div>
+            {% endif %}
+        </div>
+
+        <!-- INFO -->
+        <div style="display:flex; flex-direction:column; justify-content:center;">
+            <div style="display:flex; gap:0.5rem; margin-bottom:0.8rem; flex-wrap:wrap;">
+                <span class="badge {% if maquina.condicao == 'nova' %}badge-nova{% elif maquina.condicao == 'seminova' %}badge-seminova{% else %}badge-usada{% endif %}">{{ maquina.get_condicao_display }}</span>
+                <span class="badge badge-cond">{{ maquina.categoria.nome }}</span>
+            </div>
+
+            <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--dark-2); margin-bottom: 0.4rem; line-height: 1.2;">{{ maquina.nome }}</h1>
+            <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 1.5rem;">{{ maquina.marca }} {{ maquina.modelo }} &mdash; {{ maquina.ano }}</p>
+
+            <!-- PRICE BOX -->
+            <div style="background: var(--bg); border-radius: var(--radius-sm); padding: 1.2rem 1.4rem; margin-bottom: 1.5rem; border-left: 4px solid var(--primary);">
+                {% if maquina.em_promocao %}
+                <p class="price-old" style="margin-bottom:0.3rem;">R$ {{ maquina.preco }}</p>
+                <span class="badge badge-promo" style="margin-bottom:0.5rem;">-{{ maquina.desconto_percentual }}% OFF</span>
+                {% endif %}
+                <p style="font-size: 2rem; font-weight: 800; color: var(--primary);">R$ {{ maquina.preco_atual }}</p>
+            </div>
+
+            <!-- STOCK -->
+            <p style="font-size:0.95rem; font-weight:600; margin-bottom:1.5rem; color: {% if maquina.estoque > 0 %}var(--success){% else %}var(--danger){% endif %};">
+                {% if maquina.estoque > 0 %}✓ Em estoque &mdash; {{ maquina.estoque }} unidade{% if maquina.estoque != 1 %}s{% endif %} disponível{% if maquina.estoque != 1 %}is{% endif %}{% else %}✗ Produto indisponível{% endif %}
+            </p>
+
+            {% if maquina.estoque > 0 %}
+            <a href="{% url 'carrinho:adicionar' maquina.pk %}" class="btn btn-primary btn-lg" style="width:100%; margin-bottom:0.8rem;">🛒 Adicionar ao Carrinho</a>
+            {% endif %}
+            <a href="{% url 'core:contato' %}" class="btn btn-outline" style="width:100%;">Solicitar Orçamento</a>
+
+            <!-- DESCRIPTION -->
+            {% if maquina.descricao %}
+            <p style="margin-top: 1.8rem; line-height: 1.8; color: var(--text-muted); font-size: 0.95rem; border-top: 1px solid var(--border); padding-top: 1.2rem;">{{ maquina.descricao }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- SPECS -->
+    {% if maquina.especificacoes %}
+    <div style="background: var(--white); padding: 1.8rem; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 2.5rem;">
+        <h2 class="section-title">📋 Especificações Técnicas</h2>
+        <pre style="background: var(--bg); padding: 1.2rem; border-radius: var(--radius-sm); white-space: pre-wrap; font-family: 'Inter', monospace; font-size: 0.9rem; color: var(--text); line-height: 1.7; border: 1px solid var(--border);">{{ maquina.especificacoes }}</pre>
+    </div>
+    {% endif %}
+
+    <!-- RELATED -->
+    {% if relacionadas %}
+    <section>
+        <h2 class="section-title">Máquinas Relacionadas</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.3rem;">
+            {% for m in relacionadas %}
+            <div class="card">
+                {% if m.imagem %}
+                <img src="{{ m.imagem.url }}" alt="{{ m.nome }}" style="width:100%; height:165px; object-fit:cover;">
+                {% else %}
+                <div style="width:100%; height:165px; background:linear-gradient(135deg,#f1f2f4,#e5e7eb); display:flex; align-items:center; justify-content:center; font-size:2.5rem;">🏗️</div>
+                {% endif %}
+                <div style="padding: 0.9rem 1rem 1.1rem;">
+                    <h3 style="font-size: 0.92rem; font-weight: 700; margin-bottom: 0.3rem; color: var(--dark-2);">{{ m.nome }}</h3>
+                    <p class="price" style="font-size:1.05rem;">R$ {{ m.preco_atual }}</p>
+                    <a href="{{ m.get_absolute_url }}" class="btn btn-secondary btn-sm" style="margin-top: 0.7rem; width:100%;">Ver Detalhes</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+</div>
+{% endblock %}

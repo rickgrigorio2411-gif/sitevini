@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Finalizar Pedido — Truck Store{% endblock %}
+{% block content %}
+<div class="container" style="max-width: 940px;">
+
+    <div style="margin-bottom: 1.8rem;">
+        <a href="{% url 'carrinho:ver' %}" style="color: var(--primary); font-weight: 600; text-decoration: none; font-size: 0.9rem;">← Voltar ao Carrinho</a>
+        <h1 style="font-size: 1.9rem; font-weight: 800; color: var(--dark-2); margin-top: 0.5rem;">Finalizar Pedido</h1>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 380px; gap: 2rem; align-items: start;">
+
+        <!-- FORM -->
+        <form method="post" style="background: var(--white); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow);">
+            {% csrf_token %}
+
+            <h2 style="font-size: 1.05rem; font-weight: 700; color: var(--dark-2); margin-bottom: 1.2rem; padding-bottom: 0.7rem; border-bottom: 2px solid var(--border);">
+                Dados de Contato
+            </h2>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem;">
+                <div class="form-group">
+                    <label>Nome *</label>
+                    <input type="text" name="nome" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>E-mail *</label>
+                    <input type="email" name="email" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Telefone *</label>
+                    <input type="text" name="telefone" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Empresa <span style="font-weight:400; color:var(--text-muted);">(opcional)</span></label>
+                    <input type="text" name="empresa" class="form-control">
+                </div>
+            </div>
+
+            <h2 style="font-size: 1.05rem; font-weight: 700; color: var(--dark-2); margin: 1.4rem 0 1.2rem; padding-bottom: 0.7rem; border-bottom: 2px solid var(--border);">
+                Endereço de Entrega
+            </h2>
+
+            <div class="form-group">
+                <label>Endereço *</label>
+                <input type="text" name="endereco" required class="form-control">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0 1rem;">
+                <div class="form-group">
+                    <label>Cidade *</label>
+                    <input type="text" name="cidade" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Estado *</label>
+                    <input type="text" name="estado" maxlength="2" required class="form-control" placeholder="SP">
+                </div>
+                <div class="form-group">
+                    <label>CEP *</label>
+                    <input type="text" name="cep" required class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Observações <span style="font-weight:400; color:var(--text-muted);">(opcional)</span></label>
+                <textarea name="observacoes" rows="3" class="form-control" style="resize: vertical;"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 0.5rem;">
+                Confirmar Pedido — R$ {{ carrinho.total }}
+            </button>
+        </form>
+
+        <!-- ORDER SUMMARY -->
+        <div>
+            <div style="background: var(--white); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow);">
+                <h2 style="font-size: 1rem; font-weight: 700; color: var(--dark-2); margin-bottom: 1.2rem; padding-bottom: 0.7rem; border-bottom: 2px solid var(--border);">
+                    Resumo do Pedido
+                </h2>
+
+                {% for item in carrinho.itens.all %}
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); gap: 0.8rem;">
+                    <div style="flex:1;">
+                        <p style="font-weight: 700; font-size: 0.9rem; color: var(--dark-2); margin-bottom: 0.1rem;">{{ item.maquina.nome }}</p>
+                        <p style="color: var(--text-muted); font-size: 0.8rem;">{{ item.quantidade }}× R$ {{ item.maquina.preco_atual }}</p>
+                    </div>
+                    <p style="font-weight: 700; color: var(--dark-2); white-space: nowrap; font-size: 0.95rem;">R$ {{ item.subtotal }}</p>
+                </div>
+                {% endfor %}
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.5rem;">
+                    <span style="font-weight: 700; color: var(--dark-2);">Total</span>
+                    <span style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">R$ {{ carrinho.total }}</span>
+                </div>
+            </div>
+
+            <!-- TRUST BADGES -->
+            <div style="margin-top: 1.2rem; background: var(--white); padding: 1.2rem 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow);">
+                <div style="display: flex; flex-direction: column; gap: 0.7rem;">
+                    <div style="display: flex; align-items: center; gap: 0.6rem; color: var(--text-muted); font-size: 0.85rem;">
+                        <span style="font-size: 1.1rem;">🔒</span> Pagamento 100% seguro
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.6rem; color: var(--text-muted); font-size: 0.85rem;">
+                        <span style="font-size: 1.1rem;">🚛</span> Entrega para todo o Brasil
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.6rem; color: var(--text-muted); font-size: 0.85rem;">
+                        <span style="font-size: 1.1rem;">✅</span> Garantia em todos os equipamentos
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

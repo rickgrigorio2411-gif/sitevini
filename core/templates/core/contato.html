@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Contato — Truck Store{% endblock %}
+{% block content %}
+<div class="container" style="max-width:600px;">
+    <h1 style="margin-bottom:1.5rem;">Contato</h1>
+    {% if enviado %}
+    <div class="alert alert-success">Mensagem enviada com sucesso! Entraremos em contato em breve.</div>
+    {% else %}
+    <form method="post" style="background:#fff; padding:2rem; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+        {% csrf_token %}
+        <div style="margin-bottom:1rem;">
+            <label style="display:block; margin-bottom:0.3rem; font-weight:bold;">Nome</label>
+            <input type="text" name="nome" required style="width:100%; padding:0.6rem; border:1px solid #ddd; border-radius:4px; font-size:1rem;">
+        </div>
+        <div style="margin-bottom:1rem;">
+            <label style="display:block; margin-bottom:0.3rem; font-weight:bold;">E-mail</label>
+            <input type="email" name="email" required style="width:100%; padding:0.6rem; border:1px solid #ddd; border-radius:4px; font-size:1rem;">
+        </div>
+        <div style="margin-bottom:1rem;">
+            <label style="display:block; margin-bottom:0.3rem; font-weight:bold;">Mensagem</label>
+            <textarea name="mensagem" rows="5" required style="width:100%; padding:0.6rem; border:1px solid #ddd; border-radius:4px; font-size:1rem; resize:vertical;"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Enviar Mensagem</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

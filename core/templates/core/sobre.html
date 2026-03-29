@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Sobre — Truck Store{% endblock %}
+{% block content %}
+
+<!-- HERO SOBRE -->
+<div style="background: linear-gradient(135deg, var(--dark-2), var(--dark-3)); padding: 3.5rem 2rem; text-align: center;">
+    <h1 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin-bottom: 0.7rem;">Sobre a <span style="color:var(--primary);">Truck Store</span></h1>
+    <p style="color: #9ca3af; font-size: 1.05rem; max-width: 520px; margin: 0 auto;">Especialistas em máquinas e equipamentos pesados há mais de 10 anos.</p>
+</div>
+
+<div class="container" style="max-width: 900px;">
+
+    <!-- INFO CARDS -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.3rem; margin-bottom: 2.5rem; margin-top: -1rem; position:relative; z-index:1;">
+        <div style="background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem; text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: 0.6rem;">🏗️</div>
+            <p style="font-size: 1.6rem; font-weight: 800; color: var(--primary);">500+</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; font-weight: 500;">Equipamentos vendidos</p>
+        </div>
+        <div style="background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem; text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: 0.6rem;">📅</div>
+            <p style="font-size: 1.6rem; font-weight: 800; color: var(--primary);">10+</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; font-weight: 500;">Anos de experiência</p>
+        </div>
+        <div style="background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem; text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: 0.6rem;">🇧🇷</div>
+            <p style="font-size: 1.6rem; font-weight: 800; color: var(--primary);">Todo o Brasil</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; font-weight: 500;">Cobertura nacional</p>
+        </div>
+    </div>
+
+    <!-- TEXT CONTENT -->
+    <div style="background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 2.5rem;">
+        <h2 class="section-title">Quem somos</h2>
+
+        <p style="line-height: 1.85; margin-bottom: 1.2rem; font-size: 1.02rem; color: var(--text);">
+            A <strong>Truck Store</strong> é especializada na comercialização de máquinas e equipamentos pesados, atendendo empresas de construção, mineração, agronegócio e logística em todo o Brasil.
+        </p>
+        <p style="line-height: 1.85; margin-bottom: 1.2rem; font-size: 1.02rem; color: var(--text);">
+            Com anos de experiência no mercado, oferecemos equipamentos novos, seminovos e usados com qualidade garantida, suporte técnico especializado e as melhores condições de pagamento do setor.
+        </p>
+        <p style="line-height: 1.85; font-size: 1.02rem; color: var(--text);">
+            Nossa equipe de especialistas está pronta para ajudá-lo a encontrar o equipamento ideal para suas necessidades, com atendimento personalizado do primeiro contato até a entrega.
+        </p>
+
+        <!-- DIVIDER -->
+        <div style="border-top: 1px solid var(--border); margin: 2rem 0;"></div>
+
+        <!-- VALUES -->
+        <h2 class="section-title" style="margin-bottom:1.2rem;">Nossos diferenciais</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 1rem; background: var(--bg); border-radius: var(--radius-sm);">
+                <span style="font-size:1.3rem; flex-shrink:0;">🔍</span>
+                <div>
+                    <p style="font-weight: 700; margin-bottom: 0.2rem;">Inspeção rigorosa</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Todos os equipamentos passam por vistoria técnica antes da venda.</p>
+                </div>
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 1rem; background: var(--bg); border-radius: var(--radius-sm);">
+                <span style="font-size:1.3rem; flex-shrink:0;">🤝</span>
+                <div>
+                    <p style="font-weight: 700; margin-bottom: 0.2rem;">Suporte pós-venda</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Acompanhamento completo após a entrega do equipamento.</p>
+                </div>
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 1rem; background: var(--bg); border-radius: var(--radius-sm);">
+                <span style="font-size:1.3rem; flex-shrink:0;">💰</span>
+                <div>
+                    <p style="font-weight: 700; margin-bottom: 0.2rem;">Melhores condições</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Financiamento e parcelamento adequados à sua realidade.</p>
+                </div>
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 1rem; background: var(--bg); border-radius: var(--radius-sm);">
+                <span style="font-size:1.3rem; flex-shrink:0;">🚛</span>
+                <div>
+                    <p style="font-weight: 700; margin-bottom: 0.2rem;">Logística nacional</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Entregamos em qualquer estado do Brasil com segurança.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <a href="{% url 'core:contato' %}" class="btn btn-primary btn-lg">Entre em Contato</a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
