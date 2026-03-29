@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Sobre — Truck Store{% endblock %}
+{% block content %}
+<div class="container" style="max-width:800px;">
+    <h1 style="margin-bottom:1.5rem;">Sobre a Truck Store</h1>
+    <p style="line-height:1.8; margin-bottom:1rem; font-size:1.05rem;">
+        A Truck Store é especializada na comercialização de máquinas e equipamentos pesados, atendendo empresas de construção, mineração, agronegócio e logística em todo o Brasil.
+    </p>
+    <p style="line-height:1.8; margin-bottom:1rem; font-size:1.05rem;">
+        Com anos de experiência no mercado, oferecemos equipamentos novos, seminovos e usados com qualidade garantida, suporte técnico e as melhores condições de pagamento.
+    </p>
+    <p style="line-height:1.8; font-size:1.05rem;">
+        Nossa equipe está pronta para ajudá-lo a encontrar o equipamento ideal para suas necessidades.
+    </p>
+    <div style="margin-top:2rem;">
+        <a href="{% url 'core:contato' %}" class="btn btn-primary">Entre em Contato</a>
+    </div>
+</div>
+{% endblock %}

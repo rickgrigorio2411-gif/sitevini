@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Checkout — Truck Store{% endblock %}
+{% block content %}
+<div class="container" style="max-width:800px;">
+    <h1 style="margin-bottom:1.5rem;">Finalizar Pedido</h1>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem;">
+        <div>
+            <form method="post" style="background:#fff; padding:1.5rem; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                {% csrf_token %}
+                <h2 style="margin-bottom:1rem; font-size:1.1rem;">Dados de Contato</h2>
+                {% for field_name, label, type, required in form_fields %}{% endfor %}
+
+                {% for name, label, ftype in field_list %}
+                <div style="margin-bottom:0.9rem;">
+                    <label style="display:block; font-size:0.85rem; font-weight:bold; margin-bottom:0.2rem;">{{ label }}{% if ftype != 'optional' %} *{% endif %}</label>
+                    <input type="text" name="{{ name }}" {% if ftype != 'optional' %}required{% endif %} style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;">
+                </div>
+                {% endfor %}
+
+                <div style="margin-bottom:0.9rem;">
+                    <label style="display:block; font-size:0.85rem; font-weight:bold; margin-bottom:0.2rem;">Nome *</label>
+                    <input type="text" name="nome" required style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;">
+                </div>
+                <div style="margin-bottom:0.9rem;">
+                    <label style="display:block; font-size:0.85rem; font-weight:bold; margin-bottom:0.2rem;">E-mail *</label>
+                    <input type="email" name="email" required style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;">
+                </div>
+                <div style="margin-bottom:0.9rem;">
+                    <label style="display:block; font-size:0.85rem; font-weight:bold; margin-bottom:0.2rem;">Telefone *</label>
+                    <input type="text" name="telefone" required style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;">
+                </div>
+                <div style="margin-bottom:0.9rem;">
+                    <label style="display:block; font-size:0.85rem; font-weight:bold; margin-bottom:0.2rem;">Empresa</label>
+                    <input type="text" name="empresa" style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;">
+                </div>
+                <h2 style="margin:1.2rem 0 1rem; font-size:1.1rem;">Endereço de Entrega</h2>
+                <div style="margin-bottom:0.9rem;">
+                    <label style="display:block; font-size:0.85rem; font-weight:bold; margin-bottom:0.2rem;">Endereço *</label>
+                    <input type="text" name="endereco" required style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;">
+                </div>
+                <div style="display:grid; grid-template-columns:2fr 1fr; gap:0.8rem; margin-bottom:0.9rem;">
+                    <div>
+                        <label style="display:block; font-size:0.85rem; font-weight:bold; margin-bottom:0.2rem;">Cidade *</label>
+                        <input type="text" name="cidade" required style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;">
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:0.85rem; font-weight:bold; margin-bottom:0.2rem;">Estado *</label>
+                        <input type="text" name="estado" maxlength="2" required style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;">
+                    </div>
+                </div>
+                <div style="margin-bottom:0.9rem;">
+                    <label style="display:block; font-size:0.85rem; font-weight:bold; margin-bottom:0.2rem;">CEP *</label>
+                    <input type="text" name="cep" required style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px;">
+                </div>
+                <div style="margin-bottom:1.2rem;">
+                    <label style="display:block; font-size:0.85rem; font-weight:bold; margin-bottom:0.2rem;">Observações</label>
+                    <textarea name="observacoes" rows="3" style="width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:4px; resize:vertical;"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%; padding:0.8rem; font-size:1rem;">Confirmar Pedido — R$ {{ carrinho.total }}</button>
+            </form>
+        </div>
+
+        <div>
+            <div style="background:#fff; padding:1.5rem; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                <h2 style="margin-bottom:1rem; font-size:1.1rem;">Resumo do Pedido</h2>
+                {% for item in carrinho.itens.all %}
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.8rem; padding-bottom:0.8rem; border-bottom:1px solid #eee;">
+                    <div>
+                        <p style="font-weight:bold; font-size:0.9rem;">{{ item.maquina.nome }}</p>
+                        <p style="color:#888; font-size:0.8rem;">{{ item.quantidade }}x R$ {{ item.maquina.preco_atual }}</p>
+                    </div>
+                    <p style="font-weight:bold;">R$ {{ item.subtotal }}</p>
+                </div>
+                {% endfor %}
+                <div style="display:flex; justify-content:space-between; margin-top:1rem;">
+                    <strong>Total</strong>
+                    <strong style="color:#e94560; font-size:1.2rem;">R$ {{ carrinho.total }}</strong>
+                </div>
+            </div>
+            <a href="{% url 'carrinho:ver' %}" style="display:block; margin-top:1rem; color:#666; text-align:center;">← Voltar ao Carrinho</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

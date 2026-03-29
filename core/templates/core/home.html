@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Truck Store — Máquinas e Equipamentos{% endblock %}
+{% block content %}
+<div class="container">
+    <div style="text-align:center; padding: 3rem 0 2rem;">
+        <h1 style="font-size:2.5rem; color:#1a1a2e;">Máquinas e Equipamentos de Qualidade</h1>
+        <p style="font-size:1.2rem; color:#666; margin:1rem 0 2rem;">Encontre a máquina ideal para seu negócio</p>
+        <a href="{% url 'catalogo:lista' %}" class="btn btn-primary" style="font-size:1.1rem; padding:0.8rem 2rem;">Ver Catálogo</a>
+    </div>
+
+    {% if categorias %}
+    <div style="margin-bottom:3rem;">
+        <h2 style="margin-bottom:1rem;">Categorias</h2>
+        <div style="display:flex; flex-wrap:wrap; gap:1rem;">
+            {% for cat in categorias %}
+            <a href="{% url 'catalogo:lista' %}?categoria={{ cat.slug }}" style="background:#fff; border-radius:8px; padding:1rem 1.5rem; text-decoration:none; color:#333; box-shadow:0 2px 6px rgba(0,0,0,0.1); display:flex; align-items:center; gap:0.5rem;">
+                <span style="font-size:1.5rem;">{{ cat.icone }}</span>
+                <span style="font-weight:bold;">{{ cat.nome }}</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if destaques %}
+    <div style="margin-bottom:3rem;">
+        <h2 style="margin-bottom:1rem;">Destaques</h2>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.5rem;">
+            {% for m in destaques %}
+            <div style="background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                {% if m.imagem %}
+                <img src="{{ m.imagem.url }}" alt="{{ m.nome }}" style="width:100%; height:200px; object-fit:cover;">
+                {% else %}
+                <div style="width:100%; height:200px; background:#ddd; display:flex; align-items:center; justify-content:center; font-size:3rem;">🏗️</div>
+                {% endif %}
+                <div style="padding:1rem;">
+                    <h3 style="font-size:1rem; margin-bottom:0.3rem;">{{ m.nome }}</h3>
+                    <p style="color:#888; font-size:0.85rem; margin-bottom:0.5rem;">{{ m.marca }} {{ m.modelo }} — {{ m.ano }}</p>
+                    {% if m.em_promocao %}
+                    <p style="text-decoration:line-through; color:#999; font-size:0.85rem;">R$ {{ m.preco }}</p>
+                    {% endif %}
+                    <p style="font-size:1.2rem; font-weight:bold; color:#e94560;">R$ {{ m.preco_atual }}</p>
+                    <a href="{{ m.get_absolute_url }}" class="btn btn-primary btn-sm" style="margin-top:0.5rem;">Ver Detalhes</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if recentes %}
+    <div>
+        <h2 style="margin-bottom:1rem;">Adicionados Recentemente</h2>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.5rem;">
+            {% for m in recentes %}
+            <div style="background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                {% if m.imagem %}
+                <img src="{{ m.imagem.url }}" alt="{{ m.nome }}" style="width:100%; height:180px; object-fit:cover;">
+                {% else %}
+                <div style="width:100%; height:180px; background:#ddd; display:flex; align-items:center; justify-content:center; font-size:3rem;">🏗️</div>
+                {% endif %}
+                <div style="padding:1rem;">
+                    <h3 style="font-size:1rem; margin-bottom:0.3rem;">{{ m.nome }}</h3>
+                    <p style="color:#888; font-size:0.85rem; margin-bottom:0.5rem;">{{ m.marca }} {{ m.modelo }}</p>
+                    <p style="font-size:1.2rem; font-weight:bold; color:#e94560;">R$ {{ m.preco_atual }}</p>
+                    <a href="{{ m.get_absolute_url }}" class="btn btn-primary btn-sm" style="margin-top:0.5rem;">Ver Detalhes</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
