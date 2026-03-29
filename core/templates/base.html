@@ -284,10 +284,33 @@
             box-shadow: 0 0 0 3px rgba(233,69,96,0.12);
         }
 
+        /* ── ANIMATIONS ── */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .card { animation: fadeIn 0.35s ease both; }
+
+        /* ── SCROLL TO TOP ── */
+        #scroll-top {
+            position: fixed; bottom: 1.5rem; right: 1.5rem;
+            background: var(--primary); color: #fff;
+            width: 42px; height: 42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; cursor: pointer; border: none;
+            box-shadow: 0 4px 16px rgba(233,69,96,0.4);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 999;
+        }
+        #scroll-top.visible { opacity: 1; pointer-events: auto; }
+        #scroll-top:hover { transform: translateY(-3px); }
+
         @media (max-width: 768px) {
             nav { padding: 0 1rem; }
             .nav-links a { padding: 0.4rem 0.5rem; font-size: 0.82rem; }
             .container { padding: 1.5rem 1rem; }
+            .nav-admin { display: none; }
         }
     </style>
 </head>
@@ -318,7 +341,40 @@
 {% block content %}{% endblock %}
 
 <footer>
-    <p>&copy; 2024 <span>Truck Store</span> — Máquinas e Equipamentos de Qualidade</p>
+    <div style="max-width:1240px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:2rem; padding:2.5rem 1.5rem; text-align:left; border-bottom:1px solid rgba(255,255,255,0.07);">
+        <div>
+            <p style="font-size:1.2rem; font-weight:800; color:#fff; margin-bottom:0.6rem;">🚛 Truck Store</p>
+            <p style="font-size:0.85rem; line-height:1.7;">Especialistas em máquinas e equipamentos pesados para seu negócio crescer.</p>
+        </div>
+        <div>
+            <p style="font-weight:700; color:#fff; margin-bottom:0.8rem; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.05em;">Navegação</p>
+            <div style="display:flex; flex-direction:column; gap:0.4rem;">
+                <a href="{% url 'core:home' %}" style="color:#6b7280; text-decoration:none; font-size:0.88rem; transition:color 0.2s;" onmouseover="this.style.color='#e94560'" onmouseout="this.style.color='#6b7280'">Início</a>
+                <a href="{% url 'catalogo:lista' %}" style="color:#6b7280; text-decoration:none; font-size:0.88rem;" onmouseover="this.style.color='#e94560'" onmouseout="this.style.color='#6b7280'">Catálogo</a>
+                <a href="{% url 'core:sobre' %}" style="color:#6b7280; text-decoration:none; font-size:0.88rem;" onmouseover="this.style.color='#e94560'" onmouseout="this.style.color='#6b7280'">Sobre</a>
+                <a href="{% url 'core:contato' %}" style="color:#6b7280; text-decoration:none; font-size:0.88rem;" onmouseover="this.style.color='#e94560'" onmouseout="this.style.color='#6b7280'">Contato</a>
+            </div>
+        </div>
+        <div>
+            <p style="font-weight:700; color:#fff; margin-bottom:0.8rem; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.05em;">Contato</p>
+            <div style="display:flex; flex-direction:column; gap:0.4rem; font-size:0.85rem;">
+                <span>📍 São Paulo, SP</span>
+                <span>📞 (11) 99999-9999</span>
+                <span>✉️ contato@truckstore.com.br</span>
+                <span>🕐 Seg–Sex: 8h às 18h</span>
+            </div>
+        </div>
+    </div>
+    <div style="padding:1.2rem; text-align:center; font-size:0.82rem;">
+        &copy; 2024 <span>Truck Store</span> — Todos os direitos reservados
+    </div>
 </footer>
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+    window.addEventListener('scroll', () => {
+        document.getElementById('scroll-top').classList.toggle('visible', window.scrollY > 300);
+    });
+</script>
 </body>
 </html>
