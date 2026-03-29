@@ -1,2 +1,2 @@
 [deploy]
-startCommand = "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn truck_store.wsgi --bind 0.0.0.0:$PORT"
+startCommand = "python manage.py migrate && python manage.py collectstatic --noinput && python manage.py createsuperuser --noinput --username admin --email admin@admin.com || true && gunicorn truck_store.wsgi --bind 0.0.0.0:$PORT"
